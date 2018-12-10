@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Contact Book</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+        <script src="app.js"></script>
+       
+    </head>
+
+    <body ng-app="myApp" ng-controller="myController">
+
+        <div class="container">
+
+            <h1 class="text-center">Contact Book</h1>
+
+            <hr>
+
+            <div class="row m-3">
+                <div class="col-4">
+                    <h2>Contact Lists</h2>
+                </div>
+                <div class="col-4">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control form-control-lg" placeholder="Search" ng-model="search">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-success" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <button type="button" class="btn btn-lg btn-info float-right" data-toggle="modal" data-target="#addNewContactModal">Add New</button>
+                </div>               
+            </div>
+
+            <div class="alert alert-info" ng-if="message">
+                {{message}}
+                <button type="button" class="close" ng-click="clearMessage()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <table class="table">
+                <thead class="thead-light">
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </thead>
+                <tr ng-repeat="list in contactList  | filter: search">
+                    <td>{{list.firstName}}</td>
+                    <td>{{list.lastName}}</td>
+                    <td>{{list.email}}</td>
+                    <td>{{list.phoneNo}}</td>
+                    <td><button class="btn btn-lg btn-primary" data-toggle="modal" ng-click="selectContact(list)" data-target="#editNewContactModal">Edit</button></td>
+                    <td><button class="btn btn-lg btn-danger" data-toggle="modal" ng-click="selectContact(list)" data-target="#deleteModal">Delete</button></td>
+                </tr>
+            
+            </table>
+
+
+            <div class="modal fade" id="addNewContactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="exampleModalLabel">Add New Contact</h2>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" class="form-control form-control-lg" id="fNmae" ng-model="newContact.firstName" name="fName">
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control form-control-lg" id="lName" ng-model="newContact.lastName" name="lName">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control form-control-lg" id="email" ng-model="newContact.email" name="email">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="text" class="form-control form-control-lg" id="phoneno" ng-model="newContact.phoneNo" name="phoneno">
+                                </div>
+                                                
+                                <div class="text-center"><button type="submit" class="btn btn-lg btn-info" data-dismiss="modal" ng-click="addContact()">Save</button></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="editNewContactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="exampleModalLabel">Add New Contact</h2>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" class="form-control form-control-lg" id="fNmae" ng-model="clickedContact.firstName" name="fName">
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control form-control-lg" id="lName" ng-model="clickedContact.lastName" name="lName">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control form-control-lg" id="email" ng-model="clickedContact.email" name="email">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="text" class="form-control form-control-lg" id="phoneno" ng-model="clickedContact.phoneNo" name="phoneno">
+                                </div>
+                                                    
+                                <div class="text-center"><button type="submit" class="btn btn-lg btn-success" data-dismiss="modal" ng-click="updateContact()">Update</button></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="exampleModalLabel">Are You Sure?</h2>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+                        <div class="modal-body">
+                            You are going delete to {{clickedContact.firstName}} {{clickedContact.lastName}}.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="deleteContact()">Yes</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+</html>
